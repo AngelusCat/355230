@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Order;
 use App\Entities\User;
 use App\Enums\TicketType;
 use App\Services\EventMapper;
@@ -24,6 +25,8 @@ class TicketSystem extends Controller
         dump($event);
         dump($request);
         $user = new User(1);
-        dump($event->getTicketsUserWantsToBuy(collect(["adult" => 2, "kid" => 2])));
+        $purchasedTickets = $event->getTicketsUserWantsToBuy(collect(["adult" => 2, "kid" => 2]));
+        $order = new Order($user, $purchasedTickets);
+        dump($order);
     }
 }
