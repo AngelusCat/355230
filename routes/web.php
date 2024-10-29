@@ -19,5 +19,5 @@ Route::post('/{event_id}/buyTickets', [\App\Http\Controllers\TicketSystem::class
 
 Route::get('/t', function () {
     $mapper = new \App\Services\EventMapper();
-    $mapper->getPrices(1);
+    dump($mapper->getPrices(1));
 });

@@ -6,11 +6,13 @@ use App\Enums\TicketType;
 
 class Price
 {
+    private int $id;
     private TicketType $ticketType;
     private int $price;
 
-    public function __construct(TicketType $ticketType, int $price)
+    public function __construct(int $id, TicketType $ticketType, int $price)
     {
+        $this->id = $id;
         $this->ticketType = $ticketType;
         $this->price = $price;
     }

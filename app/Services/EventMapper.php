@@ -6,6 +6,7 @@ use App\Entities\Event;
 use App\ValueObjects\Price;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Enums\TicketType;
 
 class EventMapper
 {
@@ -14,10 +15,10 @@ class EventMapper
 
     }
 
-    public function getPrices(int $eventId)
+    public function getPrices(int $eventId): Collection
     {
-        collect(DB::table('prices')->where('event_id', $eventId)->get())->map(function ($priceTag) {
-            return new Price();
+        return collect(DB::table('prices')->where('event_id', $eventId)->get())->map(function ($priceTag) {
+            return new Price($priceTag->id, TicketType::from($priceTag->ticket_type), $priceTag->price);
         });
     }
 }
