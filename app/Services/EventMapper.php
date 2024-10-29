@@ -41,9 +41,6 @@ class EventMapper
 
     private function getOrders(int $eventId): Collection
     {
-        $ordersFromDB = collect(DB::table('orders')->where('event_id', $eventId)->get());
-        if ($ordersFromDB->isEmpty()) {
-            return $ordersFromDB;
-        }
+        return collect(DB::table('orders')->where('event_id', $eventId)->get());
     }
 }
