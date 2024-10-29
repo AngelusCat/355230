@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Services\ApiSite;
+use App\Services\Barcode;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -19,6 +20,7 @@ class Event
     private Collection $orders;
 
     private ApiSite $apiSite;
+    private Barcode $barcode;
 
     public function getId(): int
     {
@@ -55,6 +57,7 @@ class Event
         $this->prices = $prices;
         $this->orders = $orders;
         $this->apiSite = App::make(ApiSite::class);
+        $this->barcode = App::make(Barcode::class);
     }
 
     public function getNumberOfFreeTicketsOfEachType(): Collection
@@ -91,7 +94,11 @@ class Event
     {
         $isItPossibleToOrder = json_decode($this->apiSite->isItPossibleToOrder($this->id, $order));
         if (isset($isItPossibleToOrder->message) && $isItPossibleToOrder->message === 'Заказ возможно выполнить.') {
-            
+            $barcode = $this->barcode->generateBarcode();
+            $isOrderBarcodeValid = json_decode($this->apiSite->isOrderBarcodeValid($barcode));
+            if (isset($isOrderBarcodeValid->message) && $isOrderBarcodeValid->message === 'Barcode свободен.') {
+                //
+            }
         }
     }
 }

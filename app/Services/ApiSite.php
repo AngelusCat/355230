@@ -7,9 +7,16 @@ use Illuminate\Support\Facades\DB;
 
 class ApiSite
 {
-    public function isOrderBarcodeValid(int $barcode)
+    public function isOrderBarcodeValid(int $barcode): string
     {
-        //
+        if (DB::table('orders')->where('barcode', $barcode)->exists()) {
+            return json_encode([
+                'error' => 'Barcode уже присвоин другому заказу.'
+            ]);
+        }
+        return json_encode([
+            'message' => 'Barcode свободен.'
+        ]);
     }
 
     public function isItPossibleToOrder(int $eventId, Order $order): string
