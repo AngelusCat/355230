@@ -87,8 +87,11 @@ class Event
         return $ticketsUserWantsToBuy;
     }
 
-    public function makePurchaseOfTickets(Order $order)
+    public function makePurchaseOfTickets(Order $order): void
     {
-        $isItPossibleToOrder = $this->apiSite->isItPossibleToOrder($this->id, $order);
+        $isItPossibleToOrder = json_decode($this->apiSite->isItPossibleToOrder($this->id, $order));
+        if (isset($isItPossibleToOrder->message) && $isItPossibleToOrder->message === 'Заказ возможно выполнить.') {
+            
+        }
     }
 }
