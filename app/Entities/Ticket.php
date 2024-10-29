@@ -8,11 +8,13 @@ use App\ValueObjects\Price;
 
 class Ticket
 {
+    private int $id;
     private Price $price;
     private TicketStatus $status;
 
-    public function __construct(Price $price, TicketStatus $status)
+    public function __construct(int $id, Price $price, TicketStatus $status)
     {
+        $this->id = $id;
         $this->price = $price;
         $this->status = $status;
     }

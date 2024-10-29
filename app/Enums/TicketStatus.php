@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-enum TicketStatus
+enum TicketStatus: string
 {
-    case free;
-    case purchased;
+    case free = "free";
+    case purchased = "purchased";
 }
