@@ -1,0 +1,9 @@
+INSERT INTO events (name, description, start, end) VALUES ('Test', 'Test', '2024-10-29 06:29:07', '2024-10-30 06:29:07');
+
+INSERT INTO prices (ticket_type, price, event_id) VALUES ('adult', 200, 1);
+INSERT INTO prices (ticket_type, price, event_id) VALUES ('kid', 100, 1);
+
+INSERT INTO tickets (event_id, price_id, status) VALUES (1, 1, 'free');
+INSERT INTO tickets (event_id, price_id, status) VALUES (1, 1, 'free');
+INSERT INTO tickets (event_id, price_id, status) VALUES (1, 2, 'free');
+INSERT INTO tickets (event_id, price_id, status) VALUES (1, 2, 'free');
