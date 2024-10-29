@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entities\Event;
+use App\ValueObjects\Price;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -13,8 +14,10 @@ class EventMapper
 
     }
 
-    public function getPrices(int $eventId): Collection
+    public function getPrices(int $eventId)
     {
-        dump(DB::table('prices')->where('event_id', $eventId)->get());
+        collect(DB::table('prices')->where('event_id', $eventId)->get())->map(function ($priceTag) {
+            return new Price();
+        });
     }
 }
