@@ -19,6 +19,11 @@ class Ticket
         $this->status = $status;
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function noOneBoughtTicket(): bool
     {
         return $this->status->name === TicketStatus::free->name;

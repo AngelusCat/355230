@@ -2,8 +2,10 @@
 
 namespace App\Entities;
 
+use App\Services\ApiSite;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 
 class Event
 {
@@ -15,6 +17,8 @@ class Event
     private Collection $tickets;
     private Collection $prices;
     private Collection $orders;
+
+    private ApiSite $apiSite;
 
     public function getId(): int
     {
@@ -50,6 +54,7 @@ class Event
         $this->tickets = $tickets;
         $this->prices = $prices;
         $this->orders = $orders;
+        $this->apiSite = App::make(ApiSite::class);
     }
 
     public function getNumberOfFreeTicketsOfEachType(): Collection
@@ -82,8 +87,8 @@ class Event
         return $ticketsUserWantsToBuy;
     }
 
-    public function makePurchaseOfTickets(Order $order): void
+    public function makePurchaseOfTickets(Order $order)
     {
-
+        $isItPossibleToOrder = $this->apiSite->isItPossibleToOrder($this->id, $order);
     }
 }

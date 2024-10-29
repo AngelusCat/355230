@@ -19,6 +19,18 @@ class ApiSite
                 'error' => "Событие с ID: $eventId не существует."
             ]);
         }
+        $idsOfSoldOutTickets = collect([]);
+        $order->getPurchasedTicketsIds()->each(function ($purchasedTicketsId) use (&$idsOfSoldOutTickets) {
+            if (DB::table('purchased_tickets')->where('id', $purchasedTicketsId)->exists()) {
+                $idsOfSoldOutTickets->push($purchasedTicketsId);
+            }
+        });
+        if ($idsOfSoldOutTickets->isNotEmpty()) {
+            return json_encode([
+                'error' => "Выбранные для покупки билеты уже куплены другим пользователем.",
+                'idsOfSoldOutTickets' => $idsOfSoldOutTickets->all()
+            ]);
+        }
         return json_encode([
             "message" => "Заказ возможно выполнить."
         ]);

@@ -16,4 +16,9 @@ class PurchasedTicket
     {
         return $this->ticket->getPrice();
     }
+
+    public function getTicketId(): int
+    {
+        return $this->ticket->getId();
+    }
 }

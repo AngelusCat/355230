@@ -31,4 +31,11 @@ class Order
         });
         return $totalCost;
     }
+
+    public function getPurchasedTicketsIds(): Collection
+    {
+        return $this->purchasedTickets->map(function (PurchasedTicket $ticket) {
+            return $ticket->getTicketId();
+        });
+    }
 }
