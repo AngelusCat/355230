@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Enums\TicketType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TicketSystem extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $event = new \App\Entities\Event("Test", "Test", new Carbon(now()), new Carbon(now()));
+        $event = new \App\Entities\Event(1,"Test", "Test", new Carbon(now()), new Carbon(now()));
         $priceAdult = new \App\ValueObjects\Price(\App\Enums\TicketType::adult, 100);
         $priceChildren = new \App\ValueObjects\Price(TicketType::kid, 100);
         $ticket1 = new \App\Entities\Ticket($priceAdult, \App\Enums\TicketStatus::free);
@@ -21,8 +22,8 @@ class TicketSystem extends Controller
         $event->setTickets($tickets);
         return view("index", ["event" => $event, "tickets" => $event->getNumberOfFreeTicketsOfEachType()]);
     }
-    public function makePurchaseOfTickets()
+    public function makePurchaseOfTickets(Request $request, int $eventId)
     {
-
+        //
     }
 }

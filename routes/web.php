@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\TicketSystem::class, 'index'])->name('ticket.index');
+Route::post('/{event_id}/buyTickets', [\App\Http\Controllers\TicketSystem::class, 'makePurchaseOfTickets']);
