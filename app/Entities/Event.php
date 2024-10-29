@@ -62,14 +62,4 @@ class Event
             return $tickets->count();
         });
     }
-
-    public function setTickets(Collection $tickets): void
-    {
-        $this->tickets = $tickets;
-    }
-
-    public function setPrices(Collection $prices): void
-    {
-        $this->prices = $prices;
-    }
 }
