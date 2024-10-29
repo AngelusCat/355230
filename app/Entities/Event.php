@@ -62,4 +62,17 @@ class Event
             return $tickets->count();
         });
     }
+
+    public function getTicketsUserWantsToBuy(Collection $typesOfTicketsAndTheirQuantity)
+    {
+        $test = $this->tickets->mapToGroups(function (Ticket $ticket) {
+            return [$ticket->getTicketType()->value => $ticket];
+        });
+        $typesOfTicketsAndTheirQuantity->each(function (int $quantity, string $type) use ($test) {
+            if ($test->has($type)) {
+                dump($test->get($type));
+            }
+        });
+        return $test;
+    }
 }
