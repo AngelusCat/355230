@@ -40,13 +40,16 @@ class Event
         return $this->end;
     }
 
-    public function __construct(int $id, string $name, string $description, Carbon $start, Carbon $end)
+    public function __construct(int $id, string $name, string $description, Carbon $start, Carbon $end, Collection $tickets, Collection $prices, Collection $orders)
     {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->start = $start;
         $this->end = $end;
+        $this->tickets = $tickets;
+        $this->prices = $prices;
+        $this->orders = $orders;
     }
 
     public function getNumberOfFreeTicketsOfEachType(): Collection
