@@ -11,6 +11,12 @@ class Ticket
     private Price $price;
     private TicketStatus $status;
 
+    public function __construct(Price $price, TicketStatus $status)
+    {
+        $this->price = $price;
+        $this->status = $status;
+    }
+
     public function noOneBoughtTicket(): bool
     {
         return $this->status->name === TicketStatus::free->name;

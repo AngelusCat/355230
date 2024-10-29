@@ -16,10 +16,22 @@ class Event
 
     public function getNumberOfFreeTicketsOfEachType(): Collection
     {
-        $resultCollection = $this->tickets->filter(function (Ticket $ticket) {
+        return $this->tickets->filter(function (Ticket $ticket) {
             return $ticket->noOneBoughtTicket() === true;
         })->mapToGroups(function (Ticket $ticket) {
             return [$ticket->getTicketType()->name => $ticket];
+        })->map(function (Collection $tickets) {
+            return $tickets->count();
         });
+    }
+
+    public function setTickets(Collection $tickets): void
+    {
+        $this->tickets = $tickets;
+    }
+
+    public function setPrices(Collection $prices): void
+    {
+        $this->prices = $prices;
     }
 }
