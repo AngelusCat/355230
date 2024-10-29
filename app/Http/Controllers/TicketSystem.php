@@ -24,6 +24,6 @@ class TicketSystem extends Controller
         dump($event);
         dump($request);
         $user = new User(1);
-        dump($event->getTicketsUserWantsToBuy(collect(["adult" => 1, "kid" => 2])));
+        dump($event->getTicketsUserWantsToBuy(collect(["adult" => 2, "kid" => 2])));
     }
 }

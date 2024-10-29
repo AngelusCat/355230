@@ -63,16 +63,22 @@ class Event
         });
     }
 
-    public function getTicketsUserWantsToBuy(Collection $typesOfTicketsAndTheirQuantity)
+    public function getTicketsUserWantsToBuy(Collection $typesOfTicketsAndTheirQuantity): Collection
     {
-        $test = $this->tickets->mapToGroups(function (Ticket $ticket) {
+        $ticketsByType = $this->tickets->mapToGroups(function (Ticket $ticket) {
             return [$ticket->getTicketType()->value => $ticket];
         });
-        $typesOfTicketsAndTheirQuantity->each(function (int $quantity, string $type) use ($test) {
-            if ($test->has($type)) {
-                dump($test->get($type));
+        $ticketsUserWantsToBuy = collect([]);
+        $typesOfTicketsAndTheirQuantity->each(function (int $quantity, string $type) use ($ticketsUserWantsToBuy, $ticketsByType) {
+            if ($ticketsByType->has($type)) {
+                $filtered = $ticketsByType->get($type)->filter(function (Ticket $ticket) use ($ticketsUserWantsToBuy) {
+                    return $ticket->noOneBoughtTicket() === true;
+                });
+                for ($i = 1, $a = 0; $i <= $quantity; $i++, $a++) {
+                    $ticketsUserWantsToBuy->push(new PurchasedTicket($filtered[$a]));
+                }
             }
         });
-        return $test;
+        return $ticketsUserWantsToBuy;
     }
 }
