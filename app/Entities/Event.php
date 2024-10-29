@@ -81,4 +81,9 @@ class Event
         });
         return $ticketsUserWantsToBuy;
     }
+
+    public function makePurchaseOfTickets(Order $order): void
+    {
+
+    }
 }

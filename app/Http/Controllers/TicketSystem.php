@@ -27,6 +27,7 @@ class TicketSystem extends Controller
         $user = new User(1);
         $purchasedTickets = $event->getTicketsUserWantsToBuy(collect(["adult" => 2, "kid" => 2]));
         $order = new Order($user, $purchasedTickets);
+        $event->makePurchaseOfTickets($order);
         dump($order);
     }
 }
