@@ -24,10 +24,13 @@ class EventMapper
         });
     }
 
-    public function getTickets(int $eventId): Collection
+    public function getTickets(int $eventId, Collection $prices): Collection
     {
-        return collect(DB::table('tickets')->where('event_id', $eventId)->get())->map(function ($ticket) {
-            return new Ticket($ticket->id, new Price(1,TicketType::kid, 400), TicketStatus::from($ticket->status));
+        return collect(DB::table('tickets')->where('event_id', $eventId)->get())->map(function ($ticket) use ($prices) {
+            $price = $prices->first(function ($ticketPrice) use ($ticket) {
+                return $ticket->price_id === $ticketPrice->getId();
+            });
+            return new Ticket($ticket->id, $price, TicketStatus::from($ticket->status));
         });
     }
 }
