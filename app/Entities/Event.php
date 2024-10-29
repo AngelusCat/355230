@@ -13,4 +13,13 @@ class Event
     private Collection $tickets;
     private Collection $prices;
     private Collection $orders;
+
+    public function getNumberOfFreeTicketsOfEachType(): Collection
+    {
+        $resultCollection = $this->tickets->filter(function (Ticket $ticket) {
+            return $ticket->noOneBoughtTicket() === true;
+        })->mapToGroups(function (Ticket $ticket) {
+            return [$ticket->getTicketType()->name => $ticket];
+        });
+    }
 }

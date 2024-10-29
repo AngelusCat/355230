@@ -8,6 +8,6 @@ class TicketSystem extends Controller
 {
     public function makePurchaseOfTickets()
     {
-        
+
     }
 }
