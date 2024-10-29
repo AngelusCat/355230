@@ -8,6 +8,18 @@
     <title>Покупка билетов</title>
 </head>
 <body>
-
+    <p>Название события: {{ $event->getName() }}</p>
+    <p>Описание: {{ $event->getDescription() }}</p>
+    <p>Начало: {{ $event->getStart() }}</p>
+    <p>Конец: {{ $event->getEnd() }}</p>
+    <p>Купить билеты на события (выберите ползунком количество билетов каждого типа, которые Вы хотите купить)</p>
+    <form>
+        @csrf
+        @foreach($tickets as $ticketType => $number)
+            <p>
+                {{ $ticketType . ": " }}<input type="range" max="{{ $number }}">(всего доступно {{ $number }})
+            </p>
+        @endforeach
+    </form>
 </body>
 </html>

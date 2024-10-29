@@ -2,10 +2,10 @@
 
 namespace App\Enums;
 
-enum TicketType
+enum TicketType: string
 {
-    case adult;
-    case kid;
-    case preferential;
-    case group;
+    case adult = "взрослый";
+    case kid = "детский";
+    case preferential = "льготный";
+    case group = "групповой";
 }
