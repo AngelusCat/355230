@@ -17,9 +17,18 @@ class Order
     public function __construct(User $user, Collection $purchasedTickets, int $id = 0, int $totalCost = 0, int $barcode = 0, Carbon $createdAt = new Carbon())
     {
         $this->user = $user;
-        $this->totalCost = $totalCost;
+        $this->purchasedTickets = $purchasedTickets;
+        $this->totalCost = ($totalCost === 0) ? $this->calculateCostOfOrder() : $totalCost;
         $this->barcode = $barcode;
         $this->createdAt = $createdAt;
-        $this->purchasedTickets = $purchasedTickets;
+    }
+
+    private function calculateCostOfOrder(): int
+    {
+        $totalCost = 0;
+        $this->purchasedTickets->each(function (PurchasedTicket $ticket) use (&$totalCost) {
+            $totalCost += $ticket->getPrice();
+        });
+        return $totalCost;
     }
 }

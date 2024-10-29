@@ -26,4 +26,9 @@ class Price
     {
         return $this->ticketType;
     }
+
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
 }

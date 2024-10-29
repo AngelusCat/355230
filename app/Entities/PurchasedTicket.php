@@ -11,4 +11,9 @@ class PurchasedTicket
     {
         $this->ticket = $ticket;
     }
+
+    public function getPrice(): int
+    {
+        return $this->ticket->getPrice();
+    }
 }
