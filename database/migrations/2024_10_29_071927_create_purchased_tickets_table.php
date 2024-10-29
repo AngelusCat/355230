@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('purchased_tickets', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('ticket_id');
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('ticket_id')->references('id')->on('tickets');
+            $table->unsignedInteger('barcode');
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 
