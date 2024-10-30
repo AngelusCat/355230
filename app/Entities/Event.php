@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Services\ApiSite;
 use App\Services\Barcode;
+use App\Services\EventMapper;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -18,9 +19,9 @@ class Event
     private Collection $tickets;
     private Collection $prices;
     private Collection $orders;
-
     private ApiSite $apiSite;
     private Barcode $barcode;
+    private EventMapper $mapper;
 
     public function getId(): int
     {
@@ -58,6 +59,7 @@ class Event
         $this->orders = $orders;
         $this->apiSite = App::make(ApiSite::class);
         $this->barcode = App::make(Barcode::class);
+        $this->mapper = App::make(EventMapper::class);
     }
 
     public function getNumberOfFreeTicketsOfEachType(): Collection
@@ -100,7 +102,8 @@ class Event
                 $barcode = $this->barcode->generateBarcode();
                 $isOrderBarcodeValid = json_decode($this->apiSite->isOrderBarcodeValid($barcode));
             } while ((isset($isOrderBarcodeValid->message) && $isOrderBarcodeValid->message === 'Barcode свободен.') === false);
-            
+            $order->setBarcode($barcode);
+            $this->mapper->saveOrder($this->id, $order);
         }
     }
 }

@@ -23,6 +23,31 @@ class Order
         $this->createdAt = $createdAt;
     }
 
+    public function getUserId(): int
+    {
+        return $this->user->getId();
+    }
+
+    public function getTotalCost(): int
+    {
+        return $this->totalCost;
+    }
+
+    public function getBarcode(): int
+    {
+        return $this->barcode;
+    }
+
+    public function getCreatedAt(): Carbon
+    {
+        return $this->createdAt;
+    }
+
+    public function setBarcode(int $barcode): void
+    {
+        $this->barcode = $barcode;
+    }
+
     private function calculateCostOfOrder(): int
     {
         $totalCost = 0;

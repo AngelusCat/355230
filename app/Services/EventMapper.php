@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entities\Event;
+use App\Entities\Order;
 use App\Entities\Ticket;
 use App\Enums\TicketStatus;
 use App\ValueObjects\Price;
@@ -20,6 +21,17 @@ class EventMapper
         $tickets = $this->getTickets($eventId, $prices);
         $orders = $this->getOrders($eventId);
         return new Event($eventId, $event->name, $event->description, new Carbon($event->start), new Carbon($event->end), $tickets, $prices, $orders);
+    }
+
+    public function saveOrder(int $eventId, Order $order): void
+    {
+        DB::table("orders")->insert([
+            "event_id" => $eventId,
+            "user_id" => $order->getUserId(),
+            "totalCost" => $order->getTotalCost(),
+            "barcode" => $order->getBarcode(),
+            "created_at" => $order->getCreatedAt()
+        ]);
     }
 
     private function getPrices(int $eventId): Collection
