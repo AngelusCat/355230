@@ -178,7 +178,7 @@ APP_URL=http://localhost:8000
 DB_HOST=mysql
 DB_DATABASE, DB_USERNAME, DB_PASSWORD вставить такие же значения, как в env/mysql.env
 ```
-16. Удалить файл миграции в папке app/src/database/migration/create_users_table (префикс начинается с 2014).
+16. Удалить файл миграции в папке app/src/database/migrations/create_users_table (префикс начинается с 2014).
 17. Запустить следующие команды:
 ```bash
 sudo docker compose run composer install
