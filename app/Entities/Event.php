@@ -97,13 +97,13 @@ class Event
         $isItPossibleToOrder = json_decode($this->apiSite->isItPossibleToOrder($this->id, $order));
 
         if (isset($isItPossibleToOrder->message) && $isItPossibleToOrder->message === 'Заказ возможно выполнить.') {
-
             do {
                 $barcode = $this->barcode->generateBarcode();
                 $isOrderBarcodeValid = json_decode($this->apiSite->isOrderBarcodeValid($barcode));
             } while ((isset($isOrderBarcodeValid->message) && $isOrderBarcodeValid->message === 'Barcode свободен.') === false);
             $order->setBarcode($barcode);
-            $this->mapper->saveOrder($this->id, $order);
+            $order->setId($this->mapper->saveOrder($this->id, $order));
+            $order->issueBarcodeToPurchasedTicketsAndSaveThem();
         }
     }
 }

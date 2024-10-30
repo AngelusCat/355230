@@ -21,4 +21,14 @@ class PurchasedTicket
     {
         return $this->ticket->getId();
     }
+
+    public function setBarcode(int $barcode): void
+    {
+        $this->barcode = $barcode;
+    }
+
+    public function getBarcode(): int
+    {
+        return $this->barcode;
+    }
 }
