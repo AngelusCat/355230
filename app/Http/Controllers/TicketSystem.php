@@ -8,6 +8,7 @@ use App\Enums\TicketType;
 use App\Services\EventMapper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class TicketSystem extends Controller
@@ -19,15 +20,19 @@ class TicketSystem extends Controller
         $event = $this->eventMapper->getEvent($eventId);
         return view("index", ["event" => $event, "tickets" => $event->getNumberOfFreeTicketsOfEachType()]);
     }
-    public function makePurchaseOfTickets(Request $request, int $eventId)
+    public function makePurchaseOfTickets(Request $request, int $eventId): void
     {
         $event = $this->eventMapper->getEvent($eventId);
-        dump($event);
-        dump($request);
         $user = new User(1);
         $purchasedTickets = $event->getTicketsUserWantsToBuy(collect(["adult" => 2, "kid" => 2]));
         $order = new Order($user, $purchasedTickets);
-        $event->makePurchaseOfTickets($order);
-        dump($order);
+        try {
+            DB::beginTransaction();
+            $event->makePurchaseOfTickets($order);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }

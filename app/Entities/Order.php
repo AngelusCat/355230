@@ -27,6 +27,7 @@ class Order
         $this->barcode = $barcode;
         $this->createdAt = $createdAt;
         $this->barcodeGenerator = App::make(Barcode::class);
+        $this->mapper = App::make(EventMapper::class);
     }
 
     public function getUserId(): int

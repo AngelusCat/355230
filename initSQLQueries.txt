@@ -7,3 +7,5 @@ INSERT INTO tickets (event_id, price_id, status) VALUES (1, 1, 'free');
 INSERT INTO tickets (event_id, price_id, status) VALUES (1, 1, 'free');
 INSERT INTO tickets (event_id, price_id, status) VALUES (1, 2, 'free');
 INSERT INTO tickets (event_id, price_id, status) VALUES (1, 2, 'free');
+
+INSERT INTO users;

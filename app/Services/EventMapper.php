@@ -26,7 +26,7 @@ class EventMapper
 
     public function saveOrder(int $eventId, Order $order): int
     {
-        DB::table("orders")->insertGetId([
+        return DB::table("orders")->insertGetId([
             "event_id" => $eventId,
             "user_id" => $order->getUserId(),
             "totalCost" => $order->getTotalCost(),
