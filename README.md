@@ -166,21 +166,12 @@ services:
     volumes:
       - ./src:/var/www/laravel
     entrypoint: ["php", "/var/www/laravel/artisan"]
-  npm:
-    build:
-      context: dockerfiles
-      dockerfile: npm.Dockerfile
-    tty: true
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./src:/var/www/laravel
 volumes:
   db_data:
 ```
 12. Находясь в папке app запустить команду ```sudo docker compose up -d```;
 13. Запустить команду ```sudo docker compose run composer create-project laravel/laravel:^10.0 .```;
-14. Перейти в папку app/src, выполнить команду ```git clone https://github.com/AngelusCat/ticket.git``` и скопировать файлы из получившейся папки непосредственно в app/src c помощью команды cp (например: ```sudo cp . ../src -r```, здесь рабочая папка - папка, в которую клонировался проект;
+14. Перейти в папку app/src, выполнить команду ```git clone https://github.com/AngelusCat/355230.git``` и скопировать файлы из получившейся папки непосредственно в app/src c помощью команды cp (например: ```sudo cp . ../src -r```, здесь рабочая папка - папка, в которую клонировался проект;
 15. В папке src открыть через консоль файл .env и изменить некоторые настройки:
 ```env
 APP_URL=http://localhost:8000
