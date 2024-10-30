@@ -63,9 +63,9 @@ mkdir app && cd app
 ```bash
 mkdir nginx src dockerfiles env
 ```
-3. Создать Dockerfile для php и composer:
+3. Перейти в папку dockerfiles и создать Dockerfile для php и composer:
 ```bash
-touch composer.Dockerfile php.Dockerfiles
+touch composer.Dockerfile php.Dockerfile
 ```
 4. Заполнить composer.Dockerfile содержимым:
 ```dockerfile
@@ -178,12 +178,13 @@ APP_URL=http://localhost:8000
 DB_HOST=mysql
 DB_DATABASE, DB_USERNAME, DB_PASSWORD вставить такие же значения, как в env/mysql.env
 ```
-16. Запустить следующие команды:
+16. Удалить файл миграции в папке app/src/database/migration/create_users_table (префикс начинается с 2014).
+17. Запустить следующие команды:
 ```bash
 sudo docker compose run composer install
 sudo docker exec -ti app-php-1 sh (затем в терминале контейнера ввести chmod -R 777 /var/www/laravel/storage и выйти из терминала с помощью exit)
 sudo docker compose run artisan key:generate
 sudo docker compose run artisan migrate
 ```
-17. Перейти по ссылке http://localhost:8000/t, чтобы инициализировать БД изначальными значениями;
-18. Перейти в по ссылке http://localhost:8000, чтобы "купить билеты".
+18. Перейти по ссылке http://localhost:8000/t, чтобы инициализировать БД изначальными значениями;
+19. Перейти в по ссылке http://localhost:8000, чтобы "купить билеты".
