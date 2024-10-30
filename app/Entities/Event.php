@@ -93,12 +93,15 @@ class Event
     public function makePurchaseOfTickets(Order $order): void
     {
         $isItPossibleToOrder = json_decode($this->apiSite->isItPossibleToOrder($this->id, $order));
+
         if (isset($isItPossibleToOrder->message) && $isItPossibleToOrder->message === 'Заказ возможно выполнить.') {
-            $barcode = $this->barcode->generateBarcode();
-            $isOrderBarcodeValid = json_decode($this->apiSite->isOrderBarcodeValid($barcode));
-            if (isset($isOrderBarcodeValid->message) && $isOrderBarcodeValid->message === 'Barcode свободен.') {
-                //
-            }
+
+            do {
+                $barcode = $this->barcode->generateBarcode();
+                $isOrderBarcodeValid = json_decode($this->apiSite->isOrderBarcodeValid($barcode));
+            } while ((isset($isOrderBarcodeValid->message) && $isOrderBarcodeValid->message === 'Barcode свободен.') === false);
+
+            
         }
     }
 }
