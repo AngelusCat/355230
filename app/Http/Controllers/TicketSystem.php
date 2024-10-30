@@ -22,9 +22,17 @@ class TicketSystem extends Controller
     }
     public function makePurchaseOfTickets(Request $request, int $eventId): void
     {
+        $typesOfTicketsAndTheirQuantity = collect([]);
+        foreach ($request->all() as $type => $quantity) {
+            if (!in_array($type, TicketType::toArray())) {
+                continue;
+            } else {
+                $typesOfTicketsAndTheirQuantity->put($type, $quantity);
+            }
+        }
         $event = $this->eventMapper->getEvent($eventId);
         $user = new User(1);
-        $purchasedTickets = $event->getTicketsUserWantsToBuy(collect(["adult" => 2, "kid" => 2]));
+        $purchasedTickets = $event->getTicketsUserWantsToBuy($typesOfTicketsAndTheirQuantity);
         $order = new Order($user, $purchasedTickets);
         try {
             DB::beginTransaction();
