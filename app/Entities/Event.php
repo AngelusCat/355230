@@ -106,4 +106,16 @@ class Event
             $order->issueBarcodeToPurchasedTicketsAndSaveThem();
         }
     }
+
+    public function __get(string $name): Collection
+    {
+        if ($name !== "orders") {
+            throw new \ValueError("Этот метод только для свойства orders (Lazy Load)");
+        }
+        if ($this->orders->isEmpty()) {
+            $this->orders = $this->mapper->getOrders($this->id);
+        } else {
+            return $this->orders;
+        }
+    }
 }

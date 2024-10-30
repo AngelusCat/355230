@@ -20,7 +20,7 @@ class EventMapper
         $event = DB::table("events")->where("id", $eventId)->first();
         $prices = $this->getPrices($eventId);
         $tickets = $this->getTickets($eventId, $prices);
-        $orders = $this->getOrders($eventId);
+        $orders = $this->getLazyOrders();
         return new Event($eventId, $event->name, $event->description, new Carbon($event->start), new Carbon($event->end), $tickets, $prices, $orders);
     }
 
@@ -68,8 +68,13 @@ class EventMapper
         });
     }
 
-    private function getOrders(int $eventId): Collection
+    private function getLazyOrders(): Collection
     {
-        return collect(DB::table('orders')->where('event_id', $eventId)->get());
+        return collect([]);
+    }
+
+    public function getOrders(int $eventId): Collection
+    {
+        //
     }
 }
