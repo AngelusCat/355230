@@ -44,6 +44,11 @@ class EventMapper
                 "barcode" => $ticket->getBarcode()
             ]);
         });
+        $purchasedTickets->each(function (PurchasedTicket $ticket) {
+            DB::table("tickets")->where("id", $ticket->getTicketId())->update([
+                "status" => 'purchased'
+            ]);
+        });
     }
 
     private function getPrices(int $eventId): Collection
