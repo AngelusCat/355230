@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ticket_id');
             $table->unsignedBigInteger('order_id');
             $table->foreign('ticket_id')->references('id')->on('tickets');
-            $table->unsignedInteger('barcode');
+            $table->unsignedInteger('barcode')->unique();
             $table->foreign('order_id')->references('id')->on('orders');
         });
     }

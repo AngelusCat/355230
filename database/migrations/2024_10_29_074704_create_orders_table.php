@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('event_id')->references('id')->on('events');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedInteger('totalCost');
-            $table->unsignedInteger('barcode');
+            $table->unsignedInteger('barcode')->unique();
             $table->dateTime('created_at');
         });
     }
