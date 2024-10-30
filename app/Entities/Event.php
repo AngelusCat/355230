@@ -100,7 +100,6 @@ class Event
                 $barcode = $this->barcode->generateBarcode();
                 $isOrderBarcodeValid = json_decode($this->apiSite->isOrderBarcodeValid($barcode));
             } while ((isset($isOrderBarcodeValid->message) && $isOrderBarcodeValid->message === 'Barcode свободен.') === false);
-
             
         }
     }
