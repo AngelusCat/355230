@@ -60,6 +60,11 @@ class Order
         $this->id = $id;
     }
 
+    /**
+     * Генерирует уникальные barcode для каждого выбранного для покупки билета и сохраняет их в БД
+     * @return void
+     */
+
     public function issueBarcodeToPurchasedTicketsAndSaveThem(): void
     {
         $this->purchasedTickets->each(function (PurchasedTicket $ticket) {
@@ -77,6 +82,11 @@ class Order
         $this->mapper->savePurchasedTickets($this->id, $this->purchasedTickets);
     }
 
+    /**
+     * Считает стоимость заказа
+     * @return int Стоимость заказа
+     */
+
     private function calculateCostOfOrder(): int
     {
         $totalCost = 0;
@@ -85,6 +95,10 @@ class Order
         });
         return $totalCost;
     }
+
+    /**
+     * @return Collection Коллекция id билетов, которые выбраны для покупки
+     */
 
     public function getPurchasedTicketsIds(): Collection
     {

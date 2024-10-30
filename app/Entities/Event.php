@@ -20,7 +20,7 @@ class Event
     private Collection $prices;
     private Collection $orders;
     private ApiSite $apiSite;
-    private Barcode $barcode;
+    private Barcode $barcodeGenerator;
     private EventMapper $mapper;
 
     public function getId(): int
@@ -58,9 +58,13 @@ class Event
         $this->prices = $prices;
         $this->orders = $orders;
         $this->apiSite = App::make(ApiSite::class);
-        $this->barcode = App::make(Barcode::class);
+        $this->barcodeGenerator = App::make(Barcode::class);
         $this->mapper = App::make(EventMapper::class);
     }
+
+    /**
+     * @return Collection Коллекция типа "тип билета" => количество билетов определенного типа, свободных для продажи
+     */
 
     public function getNumberOfFreeTicketsOfEachType(): Collection
     {
@@ -72,6 +76,11 @@ class Event
             return $tickets->count();
         });
     }
+
+    /**
+     * @param Collection $typesOfTicketsAndTheirQuantity Коллекция типа "тип билета" => сколько билетов этого типа хочет купить пользователь
+     * @return Collection Коллекция объектов типа PurchasedTicket, ассоциированных с заказом
+     */
 
     public function getTicketsUserWantsToBuy(Collection $typesOfTicketsAndTheirQuantity): Collection
     {
@@ -92,13 +101,21 @@ class Event
         return $ticketsUserWantsToBuy;
     }
 
+    /**
+     * Проверяет условия возможности оформить заказ (событие существует, выбранные для покупки билеты доступны для продажи)
+     * Генерирует уникальный barcode для заказа
+     * Сохраняет заказ и информацию о купленных билетах
+     * @param Order $order Заказ на покупку билетов, который находится в состоянии оформления
+     * @return void
+     */
+
     public function makePurchaseOfTickets(Order $order): void
     {
         $isItPossibleToOrder = json_decode($this->apiSite->isItPossibleToOrder($this->id, $order));
 
         if (isset($isItPossibleToOrder->message) && $isItPossibleToOrder->message === 'Заказ возможно выполнить.') {
             do {
-                $barcode = $this->barcode->generateBarcode();
+                $barcode = $this->barcodeGenerator->generateBarcode();
                 $isOrderBarcodeValid = json_decode($this->apiSite->isOrderBarcodeValid($barcode));
             } while ((isset($isOrderBarcodeValid->message) && $isOrderBarcodeValid->message === 'Barcode свободен.') === false);
             $order->setBarcode($barcode);
@@ -106,6 +123,12 @@ class Event
             $order->issueBarcodeToPurchasedTicketsAndSaveThem();
         }
     }
+
+    /**
+     * Используется для ленивой загрузки коллекции, с помощью инициализации по требованию
+     * @param string $name Название свойства класса Event
+     * @return Collection Возвращает коллекцию объектов типа Order, ассоциированных с событием
+     */
 
     public function __get(string $name): Collection
     {

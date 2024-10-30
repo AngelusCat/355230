@@ -24,6 +24,11 @@ class Ticket
         return $this->id;
     }
 
+    /**
+     * Проверяет, находится ли билет в состоянии "свободен для продажи"
+     * @return bool
+     */
+
     public function noOneBoughtTicket(): bool
     {
         return $this->status->name === TicketStatus::free->name;

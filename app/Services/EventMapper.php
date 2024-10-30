@@ -15,6 +15,11 @@ use App\Enums\TicketType;
 
 class EventMapper
 {
+    /**
+     * Собирает Event из БД
+     * @param int $eventId
+     * @return Event
+     */
     public function getEvent(int $eventId): Event
     {
         $event = DB::table("events")->where("id", $eventId)->first();
@@ -23,6 +28,13 @@ class EventMapper
         $orders = $this->getLazyOrders();
         return new Event($eventId, $event->name, $event->description, new Carbon($event->start), new Carbon($event->end), $tickets, $prices, $orders);
     }
+
+    /**
+     * Сохраняет успешно оформленный заказ в БД
+     * @param int $eventId
+     * @param Order $order
+     * @return int
+     */
 
     public function saveOrder(int $eventId, Order $order): int
     {
@@ -34,6 +46,13 @@ class EventMapper
             "created_at" => $order->getCreatedAt()
         ]);
     }
+
+    /**
+     * Сохраняет информацию о купленных билетах
+     * @param int $orderId
+     * @param Collection $purchasedTickets
+     * @return void
+     */
 
     public function savePurchasedTickets(int $orderId, Collection $purchasedTickets): void
     {
@@ -51,12 +70,25 @@ class EventMapper
         });
     }
 
+    /**
+     * Создает коллекцию объектов Price по информации из БД
+     * @param int $eventId
+     * @return Collection
+     */
+
     private function getPrices(int $eventId): Collection
     {
         return collect(DB::table('prices')->where('event_id', $eventId)->get())->map(function ($priceTag) {
             return new Price($priceTag->id, TicketType::from($priceTag->ticket_type), $priceTag->price);
         });
     }
+
+    /**
+     * Создает коллекцию объектов Ticket по информации из БД
+     * @param int $eventId
+     * @param Collection $prices
+     * @return Collection
+     */
 
     private function getTickets(int $eventId, Collection $prices): Collection
     {
@@ -68,10 +100,21 @@ class EventMapper
         });
     }
 
+    /**
+     * Возвращает пустую коллекцию, потому что используется ленивая загрузка, на данный момент система не нуждается в созданиии объектов этого типа
+     * @return Collection
+     */
+
     private function getLazyOrders(): Collection
     {
         return collect([]);
     }
+
+    /**
+     * Должен возвращать коллекцию объектов Order по информации из БД, но т.к. в системе нет пока что нужды в этом, реализация этого метода опускается
+     * @param int $eventId
+     * @return Collection
+     */
 
     public function getOrders(int $eventId): Collection
     {

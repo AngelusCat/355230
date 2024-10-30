@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class ApiSite
 {
+    /**
+     * Проверяет уникальность barcode заказа
+     * @param int $barcode barcode заказа
+     * @return string ответ в формате JSON от "API"
+     */
     public function isOrderBarcodeValid(int $barcode): string
     {
         if (DB::table('orders')->where('barcode', $barcode)->exists()) {
@@ -18,6 +23,13 @@ class ApiSite
             'message' => 'Barcode свободен.'
         ]);
     }
+
+    /**
+     * Проверяет условия оформления заказа
+     * @param int $eventId id события
+     * @param Order $order Заказ, находящийся в процессе оформления
+     * @return string ответ в формате JSON от "API"
+     */
 
     public function isItPossibleToOrder(int $eventId, Order $order): string
     {
